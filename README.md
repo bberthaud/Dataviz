@@ -1,3 +1,7 @@
-# Dataviz Project 
+# Projet DataViz - Banquise & CO2
 
-by Philippe Lee, Nathan Boulogne, Edgar Loriot and Baptiste Berthaud
+Membres : 
+* Philippe Lee
+* Nathan Boulogne
+* Edgar Loriot
+* Baptiste Berthaud
