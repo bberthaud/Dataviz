@@ -1,6 +1,6 @@
 # Projet DataViz - Banquise & CO2
 
-Ce projet de Dataviz a été réalisé dans le cadre du [Cours visualisation interactive de données](https://lyondataviz.github.io/teaching/lyon1-m2/2020/) de l'[Université Claude-Bernard Lyon1](https://www.univ-lyon1.fr/).
+Ce projet de Dataviz a été réalisé dans le cadre du [Cours visualisation interactive de données](https://lyondataviz.github.io/teaching/lyon1-m2/2020/) du master [Data Science (Maths)](https://mastermas.univ-lyon1.fr/index.php/page1-2/) de l'[Université Claude-Bernard Lyon1](https://www.univ-lyon1.fr/).
 
 
 ## Membres
