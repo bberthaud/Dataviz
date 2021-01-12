@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <link href="style.css" />
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous"
+  />
+  <script src="main.js"></script>
+  <script src="home.js"></script>
+  <script src="linechartco2.js"></script>
+  <script src="chartbanquise.js"></script>
+  <script src="linechartsea.js"></script>
+  <script src="fin.js"></script>
+  <script src="ref.js"></script>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://d3js.org/topojson.v1.min.js"></script>
+
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="text-center">
+    <h1>Banquise & CO2</h1>
+  </div>
+  <hr />
+  <div id="container">
+    <div class="row">
+      <div class="btn-group col-12 buttonhaut" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary col-2 homebutton">
+          Accueil
+        </button>
+        <button  type="button" class="btn btn-secondary col-2 grapheCO2button">
+          Emissions de CO2
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary col-2 grapheBanquisebutton"
+        >
+          Superficie de la banquise
+        </button>
+        <button type="button" class="btn btn-secondary col-2 grapheSEAbutton">
+          Niveau de la mer
+        </button>
+        <button type="button" class="btn btn-secondary col-2 finbutton">
+          Fin
+        </button>
+        <button type="button" class="btn btn-secondary col-2 refbutton">
+          Références
+        </button>
+      </div>
+    </div>
+    <div id="vis">
+      </div>
+    </div>
+    <!-- https://getbootstrap.com/docs/4.0/components/buttons/ -->
+    <!-- https://getbootstrap.com/docs/4.0/components/button-group/ -->
+
+    <!-- <footer>test</footer> -->
+  </div>
+  <footer>
+    <div class="container">
+          <div class="text-center footer">
+            <center>Nathan Boulogne, Philippe Lee, Edgar Loriot & Baptiste Berthaud</center>
+          </div>
+        </div>
+  </footer>
+</body>
