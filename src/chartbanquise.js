@@ -1,7 +1,4 @@
-import { testco2 } from "./linechartco2.js";
-import { sealevel } from "./linechartsea.js";
-
-export function banquise() {
+function banquise() {
   d3.select("#vis").append("svg").attr("id", "svg");
 
   var margin = { top: 50, right: 30, bottom: 30, left: 80 },
@@ -128,7 +125,7 @@ export function banquise() {
     return tooltip;
   }
 
-  d3.csv("arctic_superficie.csv").then(function (data3) {
+  d3.csv("src/arctic_superficie.csv").then(function (data3) {
     data3.forEach((d) => {
       d.date = +parseTime3(d.year);
       d.extent = +d.extent;

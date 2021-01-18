@@ -1,7 +1,4 @@
-import { banquise } from "./chartbanquise.js";
-import { fin } from "./fin.js";
-
-export function sealevel() {
+function sealevel() {
   d3.select("#vis").append("svg").attr("id", "svg");
 
   var margin = { top: 50, right: 30, bottom: 30, left: 80 },
@@ -38,12 +35,30 @@ export function sealevel() {
     .x((d) => x2(d.date))
     .y((d) => y2(d.sea));
 
+  // pour tracer une droite
+  var line2Lower = d3
+    .line()
+    .x((d) => x2(d.date))
+    .y((d) => y2(d.lower));
+
+  // pour tracer une droite
+  var line2Upper = d3
+    .line()
+    .x((d) => x2(d.date))
+    .y((d) => y2(d.higher));
+
   // pour le dégradé sous la courbe
   var area2 = d3
     .area()
     .x((d) => x2(d.date))
     .y0(height)
     .y1((d) => y2(d.sea));
+
+  var area280 = d3
+    .area()
+    .x((d) => x2(d.date))
+    .y0((d) => y2(d.lower))
+    .y1((d) => y2(d.higher));
 
   // Titre
   var titre2 = svg2
@@ -120,7 +135,7 @@ export function sealevel() {
     return tooltip;
   }
 
-  d3.csv("sea_level_predict_offset.csv").then(function (data2) {
+  d3.csv("src/SEA_ALL.csv").then(function (data2) {
     function leapYear(year) {
       return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
     }
@@ -138,6 +153,9 @@ export function sealevel() {
       // d.date = convertDecimalDate(d.year);
       d.date = parseTime2(d.year);
       d.sea = +d.GMSL;
+      d.higher = +d.sea_higher;
+      d.lower = +d.sea_lower;
+      d.id = +d.id;
     });
 
     x2.domain(d3.extent(data2, (d) => d.date));
@@ -202,22 +220,61 @@ export function sealevel() {
           })
         )
       );
-    var linePathPredict2 = svg2
+
+    var linePathPredict2Lower = svg2
       .append("path")
       .datum(data2)
       .style("fill", "none")
       .style("stroke", "#FF0000") // COULEUR
       .style("stroke-width", "1.5px")
-      .style("opacity", "1")
+      .style("opacity", "0.3")
       // .attr("d", line2)
       .attr(
         "d",
-        line2(
+        line2Lower(
           data2.filter(function (d) {
             return d.id > 1017;
           })
         )
       );
+
+    var linePathPredict2Upper = svg2
+      .append("path")
+      .datum(data2)
+      .style("fill", "none")
+      .style("stroke", "#FF0000") // COULEUR
+      .style("stroke-width", "1.5px")
+      .style("opacity", "0.3")
+      // .attr("d", line2)
+      .attr(
+        "d",
+        line2Upper(
+          data2.filter(function (d) {
+            return d.id > 1017;
+          })
+        )
+      );
+
+    var totalLengthPredict = linePathPredict2Upper.node().getTotalLength();
+
+    linePathPredict2Lower
+      .attr("stroke-dasharray", totalLengthPredict + " " + totalLengthPredict)
+      .attr("stroke-dashoffset", totalLengthPredict)
+      .transition() // Call Transition Method
+      .delay(4000)
+      .duration(3000) // Set Duration timing (ms)
+      .ease(d3.easeLinear) // Set Easing option
+      .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
+
+    linePathPredict2Upper
+      .attr("stroke-dasharray", totalLengthPredict + " " + totalLengthPredict)
+      .attr("stroke-dashoffset", totalLengthPredict)
+      .transition() // Call Transition Method
+      .delay(4000)
+      .duration(3000) // Set Duration timing (ms)
+      .ease(d3.easeLinear) // Set Easing option
+      .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
+
     // Predictions à partir du 2020-08-15
     // Le reste du code ira ici
     svg2
@@ -254,12 +311,50 @@ export function sealevel() {
       );
     //  decommenter si on veut afficher le dégradé sous la courbe
 
+    svg2
+      .append("linearGradient")
+      .attr("id", "area280chart-gradient")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", 0)
+      .attr("x2", 0)
+      .attr("y1", y2(d3.min(data2, (d) => d.lower)))
+      .attr("y2", y2(d3.max(data2, (d) => d.higher)))
+      .selectAll("stop")
+      .data([
+        { offset: "0%", color: "#EC7063" },
+        { offset: "100%", color: "#EC7063" }
+      ]) // couleur dégradé
+      //  https://observablehq.com/@d3/color-schemes?collection=@d3/d3-scale-chromatic
+      .enter()
+      .append("stop")
+      .attr("offset", (d) => d.offset)
+      .attr("stop-color", (d) => d.color);
+
+    var area280Path = svg2
+      .append("path")
+      .datum(data2)
+      .style("fill", "url(#area280chart-gradient)")
+      .style("opacity", "0")
+      .attr(
+        "d",
+        area280(
+          data2.filter(function (d) {
+            return d.id >= 1017;
+          })
+        )
+      );
+
     areaPath2
       .transition() // Call Transition Method
       .delay(3200)
       .duration(4000) // Set Duration timing (ms)
       .style("opacity", 1); // Set final value of dash-offset for transition
 
+    area280Path
+      .transition() // Call Transition Method
+      .delay(3200)
+      .duration(4000) // Set Duration timing (ms)
+      .style("opacity", 0.3);
     // Variable to Hold Total Length
     var totalLength2 = linePath2.node().getTotalLength();
     // Set Properties of Dash Array and Dash Offset and initiate Transition
@@ -272,6 +367,22 @@ export function sealevel() {
       .ease(d3.easeLinear) // Set Easing option
       .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
 
+    var linePathPredict2 = svg2
+      .append("path")
+      .datum(data2)
+      .style("fill", "none")
+      .style("stroke", "#FF0000") // COULEUR
+      .style("stroke-width", "1.5px")
+      .style("opacity", "1")
+      // .attr("d", line2)
+      .attr(
+        "d",
+        line2(
+          data2.filter(function (d) {
+            return d.id > 1017;
+          })
+        )
+      );
     var totalLengthPredict2 = linePathPredict2.node().getTotalLength();
     linePathPredict2
       .attr("stroke-dasharray", totalLengthPredict2 + " " + totalLengthPredict2)
@@ -314,6 +425,13 @@ export function sealevel() {
       .attr("cy", height - 275)
       .attr("r", 6)
       .style("fill", "#FF0000");
+    var legendesea3 = svg2
+      .append("circle")
+      .style("opacity", 0)
+      .attr("cx", 80)
+      .attr("cy", height - 250)
+      .attr("r", 6)
+      .style("fill", "#EC7063");
 
     var legendesea1text = svg2
       .append("text")
@@ -330,10 +448,19 @@ export function sealevel() {
       .attr("x", 95)
       .attr("y", height - 270)
       .text("Prédictions");
+    var legendesea3text = svg2
+      .append("text")
+      .style("opacity", 0)
+      .style("fill", "#EC7063")
+      .attr("x", 95)
+      .attr("y", height - 245)
+      .text("Intervalle de confiance à 80% des prédictions");
     legendesea1text.transition().delay(3000).duration(2000).style("opacity", 1);
     legendesea2text.transition().delay(3000).duration(2000).style("opacity", 1);
     legendesea1.transition().delay(3000).duration(2000).style("opacity", 1);
     legendesea2.transition().delay(3000).duration(2000).style("opacity", 1);
+    legendesea3.transition().delay(3000).duration(2000).style("opacity", 0.3);
+    legendesea3text.transition().delay(3000).duration(2000).style("opacity", 1);
 
     function mousemove() {
       var x0 = x2.invert(d3.pointer(event)[0]), //d3v6

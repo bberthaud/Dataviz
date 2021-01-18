@@ -1,9 +1,4 @@
-// Definition de la taille du svg
-import { sealevel } from "./linechartsea.js";
-import { viewHome } from "./home.js";
-import { banquise } from "./chartbanquise.js";
-
-export function testco2() {
+function testco2() {
   d3.select("#vis").append("svg").attr("id", "svg");
 
   var margin = { top: 50, right: 30, bottom: 30, left: 80 },
@@ -47,12 +42,30 @@ export function testco2() {
     .x((d) => x(d.date))
     .y((d) => y(d.close));
 
+  // pour tracer une droite
+  var lineLower = d3
+    .line()
+    .x((d) => x(d.date))
+    .y((d) => y(d.lower));
+
+  // pour tracer une droite
+  var lineUpper = d3
+    .line()
+    .x((d) => x(d.date))
+    .y((d) => y(d.higher));
+
   // pour le dégradé sous la courbe
   var area = d3
     .area()
     .x((d) => x(d.date))
     .y0(height)
     .y1((d) => y(d.close));
+
+  var area80 = d3
+    .area()
+    .x((d) => x(d.date))
+    .y0((d) => y(d.lower))
+    .y1((d) => y(d.higher));
 
   // titre
   var titre = svg
@@ -129,7 +142,7 @@ export function testco2() {
     return tooltip;
   }
 
-  d3.csv("co2_forecast.csv").then(function (data) {
+  d3.csv("src/C02_FINAL.csv").then(function (data) {
     function leapYear(year) {
       return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
     }
@@ -145,6 +158,9 @@ export function testco2() {
     data.forEach((d) => {
       d.date = parseTime(d.year);
       d.close = +d.rate;
+      d.higher = +d.co2_higher;
+      d.lower = +d.co2_lower;
+      d.id = +d.id;
     });
 
     // data.sort((a, b) => a.date - b.date);
@@ -213,27 +229,52 @@ export function testco2() {
         )
       );
 
-    // Variable to Hold Total Length
-
-    var linePathPredict = svg
+    var linePathPredictLower = svg
       .append("path")
       .datum(data)
       .style("fill", "none")
       .style("stroke", "#FF0000") // COULEUR
       .style("stroke-width", "1.5px")
-      .style("opacity", "1")
+      .style("opacity", "0.3")
       // .attr("d", line2)
       .attr(
         "d",
-        line(
+        lineLower(
           data.filter(function (d) {
             return d.id > 752;
           })
         )
       );
 
-    var totalLengthPredict = linePathPredict.node().getTotalLength();
-    linePathPredict
+    var linePathPredictUpper = svg
+      .append("path")
+      .datum(data)
+      .style("fill", "none")
+      .style("stroke", "#FF0000") // COULEUR
+      .style("stroke-width", "1.5px")
+      .style("opacity", "0.3")
+      // .attr("d", line2)
+      .attr(
+        "d",
+        lineUpper(
+          data.filter(function (d) {
+            return d.id > 752;
+          })
+        )
+      );
+
+    var totalLengthPredict = linePathPredictUpper.node().getTotalLength();
+
+    linePathPredictLower
+      .attr("stroke-dasharray", totalLengthPredict + " " + totalLengthPredict)
+      .attr("stroke-dashoffset", totalLengthPredict)
+      .transition() // Call Transition Method
+      .delay(4000)
+      .duration(3000) // Set Duration timing (ms)
+      .ease(d3.easeLinear) // Set Easing option
+      .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
+
+    linePathPredictUpper
       .attr("stroke-dasharray", totalLengthPredict + " " + totalLengthPredict)
       .attr("stroke-dashoffset", totalLengthPredict)
       .transition() // Call Transition Method
@@ -289,13 +330,78 @@ export function testco2() {
         )
       );
 
+    svg
+      .append("linearGradient")
+      .attr("id", "area80chart-gradient")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", 0)
+      .attr("x2", 0)
+      .attr("y1", y(d3.min(data, (d) => d.lower)))
+      .attr("y2", y(d3.max(data, (d) => d.higher)))
+      .selectAll("stop")
+      .data([
+        { offset: "0%", color: "#EC7063" },
+        { offset: "100%", color: "#EC7063" }
+      ]) // couleur dégradé
+      //  https://observablehq.com/@d3/color-schemes?collection=@d3/d3-scale-chromatic
+      .enter()
+      .append("stop")
+      .attr("offset", (d) => d.offset)
+      .attr("stop-color", (d) => d.color);
     //  decommenter si on veut afficher le dégradé sous la courbe
+
+    var area80Path = svg
+      .append("path")
+      .datum(data)
+      .style("fill", "url(#area80chart-gradient)")
+      .style("opacity", "0")
+      .attr(
+        "d",
+        area80(
+          data.filter(function (d) {
+            return d.id >= 753;
+          })
+        )
+      );
+    area80Path
+      .transition() // Call Transition Method
+      .delay(3200)
+      .duration(4000) // Set Duration timing (ms)
+      .style("opacity", 0.3);
 
     areaPath
       .transition() // Call Transition Method
       .delay(3200)
       .duration(4000) // Set Duration timing (ms)
-      .style("opacity", 1); // Set final value of dash-offset for transition
+      .style("opacity", 0.8); // Set final value of dash-offset for transition
+
+    // Variable to Hold Total Length
+
+    var linePathPredict = svg
+      .append("path")
+      .datum(data)
+      .style("fill", "none")
+      .style("stroke", "#FF0000") // COULEUR
+      .style("stroke-width", "1.5px")
+      .style("opacity", "1")
+      // .attr("d", line2)
+      .attr(
+        "d",
+        line(
+          data.filter(function (d) {
+            return d.id > 752;
+          })
+        )
+      );
+
+    linePathPredict
+      .attr("stroke-dasharray", totalLengthPredict + " " + totalLengthPredict)
+      .attr("stroke-dashoffset", totalLengthPredict)
+      .transition() // Call Transition Method
+      .delay(4000)
+      .duration(3000) // Set Duration timing (ms)
+      .ease(d3.easeLinear) // Set Easing option
+      .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
 
     // tooltip
     var tooltip = addTooltip();
@@ -330,6 +436,14 @@ export function testco2() {
       .attr("r", 6)
       .style("fill", "#FF0000");
 
+    var legendeCO23 = svg
+      .append("circle")
+      .style("opacity", 0)
+      .attr("cx", 80)
+      .attr("cy", height - 250)
+      .attr("r", 6)
+      .style("fill", "#EC7063");
+
     var legendeCO21text = svg
       .append("text")
       .style("opacity", 0)
@@ -345,10 +459,20 @@ export function testco2() {
       .attr("x", 95)
       .attr("y", height - 270)
       .text("Prédictions");
+
+    var legendeCO23text = svg
+      .append("text")
+      .style("opacity", 0)
+      .style("fill", "#EC7063")
+      .attr("x", 95)
+      .attr("y", height - 245)
+      .text("Intervalle de confiance à 80% des prédictions");
     legendeCO21text.transition().delay(3000).duration(2000).style("opacity", 1);
     legendeCO22text.transition().delay(3000).duration(2000).style("opacity", 1);
     legendeCO21.transition().delay(3000).duration(2000).style("opacity", 1);
     legendeCO22.transition().delay(3000).duration(2000).style("opacity", 1);
+    legendeCO23text.transition().delay(3000).duration(2000).style("opacity", 1);
+    legendeCO23.transition().delay(3000).duration(2000).style("opacity", 0.3);
 
     function mousemove() {
       var x0 = x.invert(d3.pointer(event)[0]), //d3v6

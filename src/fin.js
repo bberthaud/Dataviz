@@ -1,10 +1,4 @@
-import { testco2 } from "./linechartco2.js";
-import { sealevel } from "./linechartsea.js";
-import { viewHome } from "./home.js";
-import { banquise } from "./chartbanquise.js";
-import { ref } from "./ref.js";
-
-export function fin() {
+function fin() {
   var divFin = d3
     .select("#vis")
     .append("div")
@@ -24,7 +18,7 @@ export function fin() {
     .append("p")
     .append("text")
     .text(
-      "Revenons à notre ami l’ours blanc. Mais où est-il passé ? “BLOBLOBLOBLO” essaie de dire l’ours blanc sous l'eau. Je crois bien qu’on l’a perdu ..."
+      "Quelles en sont les conséquences pour les populations locales comme l'ours blanc ?"
     );
 
   text
@@ -38,7 +32,7 @@ export function fin() {
     .append("div")
     .attr("class", "homeimage offset-1 col-4 offset-1 img-fluid")
     .append("img")
-    .attr("src", "ImageOurs.png")
+    .attr("src", "src/ImageOurs.png")
     .attr("class", "ours3");
 
   document.getElementById("textgraph").style.animation = "fadeIn 4s";

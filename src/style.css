@@ -4,7 +4,10 @@
 }
 
 body {
-  background: #9198e5; /*#55ff00  #e4eeff*/
+  /* background: #9198e5; #55ff00  #e4eeff */
+  background-image: url("banquise.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #container {
@@ -42,7 +45,8 @@ body {
 }
 
 .hometext {
-  background: #fa8072; /* saumon #FA8072 #ffff00*/
+  /* background: #fa8072; saumon #FA8072 #ffff00 */
+  background: #ffffff;
   margin-top: 80px;
   margin-bottom: 80px;
   padding: 20px;
@@ -116,4 +120,8 @@ body {
 
 .footer {
   margin-top: 20px;
+}
+
+h1 {
+  font-size: 3rem;
 }

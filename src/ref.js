@@ -1,10 +1,4 @@
-import { testco2 } from "./linechartco2.js";
-import { sealevel } from "./linechartsea.js";
-import { viewHome } from "./home.js";
-import { banquise } from "./chartbanquise.js";
-import { fin } from "./fin.js";
-
-export function ref() {
+function ref() {
   var divref = d3
     .select("#vis")
     .append("div")

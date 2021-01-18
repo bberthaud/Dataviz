@@ -1,13 +1,6 @@
-import { testco2 } from "./linechartco2.js";
-import { sealevel } from "./linechartsea.js";
-import { viewHome } from "./home.js";
-import { banquise } from "./chartbanquise.js";
-import { fin } from "./fin.js";
-import { ref } from "./ref.js";
-
+// ##################################################################################################################################################################
 // on cree le seul et l'unique svg
 viewHome();
-// d3.select("#vis").append("svg").attr("id", "svg");
 
 // BOUTON POUR AFFICHER LE HOME ET CACHER LE RESTE
 d3.selectAll(".homebutton").on("click", function () {

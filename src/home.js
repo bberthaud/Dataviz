@@ -1,9 +1,6 @@
-import { testco2 } from "./linechartco2.js";
-import { sealevel } from "./linechartsea.js";
-
-export function viewHome() {
-  var img = document.createElement("img");
-  img.src = "ours3.png";
+function viewHome() {
+  // var img = document.createElement("img");
+  // img.src = "ours3.png";
 
   var accueil = d3
     .select("#vis")
@@ -17,7 +14,7 @@ export function viewHome() {
     .append("p")
     .append("text")
     .text(
-      "“La banquise fond” dit l’ours blanc. Certes elle fond mais depuis combien de temps ? à quelle vitesse ? est-ce gênant pour notre ami l’ours ?"
+      "La banquise fond c'est indéniable mais savez-vous depuis combien de temps ? à quelle vitesse ? est-ce problématique pour les animaux qui y vivent comme les ours ?"
     );
 
   text
@@ -38,7 +35,7 @@ export function viewHome() {
     .append("div")
     .attr("class", "homeimage offset-1 col-4 offset-1 img-fluid")
     .append("img")
-    .attr("src", "ours3.png")
+    .attr("src", "src/ours3.png")
     .attr("class", "ours3");
 
   var choixHome = d3
