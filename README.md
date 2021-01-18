@@ -10,6 +10,21 @@ Ce projet de Dataviz a été réalisé dans le cadre du [Cours visualisation int
 * [Baptiste Berthaud](https://github.com/bberthaud)
 
 
+
+![vue](description.png)
+
+
+## Description du projet
+
+La fonte des glaces est un problème contemporain d'enjeu planétaire. La prise de conscience sur ce sujet est de plus en plus forte dans nos sociétés occidentales : nous sommes bombardés de chiffres, mais ces derniers manquent parfois de contexte. C'est pourquoi nous vous proposons une storytelling avec des graphiques dynamiques interactifs pour étudier ensemble l'impact des émissions de CO2 sur la superficie de la banquise (Arctique). On veut répondre à la problématique suivante : Comment ont évolué la superficie des banquises et le taux d'émission de CO2 conjointement ces dernières décennies ? L’objectif est de mettre en évidence la corrélation entre l’évolution du taux d’émission de CO2 avec celle de la superficie des banquises.
+
+
+## Description of the project
+
+The melting ice is a contemporary problem of global issue. Awareness on this subject is growing in our Western societies: we are overwhelmed with figures, but they sometimes lack context. This is why we offer you a storytelling with interactive dynamic graphics to study together the impact of CO2 emissions on the surface of sea ice (Arctic). We want to answer the following problem: How have the surface of sea ice and the CO2 emission rate evolved over the last decades? The objective is to highlight the correlation between the evolution of the CO2 emission rate with that of sea ice surface.
+
+
+
 ## Développement
 
 Pour comprendre les transitions :
