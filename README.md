@@ -11,7 +11,7 @@ Ce projet de Dataviz a été réalisé dans le cadre du [Cours visualisation int
 
 
 
-![vue](descriptiontest.PNG)
+![vue](description.PNG)
 
 
 ## Description du projet
